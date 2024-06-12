@@ -4,8 +4,8 @@ import LogIn from '../Components/Authentication/LogIn';
 import Dashboard from '../Components/Dashboard/Dashboard';
 import PrivateRoute from './PrivateRoute';
 import AdminDashBoard from '../Components/Dashboard/DashBoardComponents/AdminDashBoard';
-import NewApplication from '../Components/Dashboard/DashBoardComponents/NewApplication';
 import UploadData from '../Components/Dashboard/DashBoardComponents/UploadData';
+import NewApplication from '../Components/Dashboard/DashBoardComponents/NewApplication/NewApplication';
 
 const Routes = createBrowserRouter([
     {
