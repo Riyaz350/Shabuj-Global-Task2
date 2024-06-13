@@ -15,6 +15,7 @@ const NewApplication = () => {
     const [errors, setErrors] = useState([])
     const [documents, setDocuments] = useState([])
     const [firstFormData, setFirstFormData] = useState({})
+    const [studentDetails, setStudentDetails] = useState({})
     const country = firstFormData.country
     const season = firstFormData.season
     const uni = firstFormData.uni
@@ -114,7 +115,7 @@ const NewApplication = () => {
                 <div className="flex flex-col bg-white  rounded-lg">
                     <h1 className="p-5 text-lg md:text-xl font-semibold">Please enter student details to process this application            </h1>
                     <div className="m-5 ">
-                        <StudentsDetails Form={Form} />
+                        <StudentsDetails setStudentDetails={setStudentDetails}/>
                     </div>
                         <button  className="btn m-10 ml-auto btn-primary text-lg text-white  font-bold">Submit</button>
                 </div>
