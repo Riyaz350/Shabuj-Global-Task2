@@ -117,6 +117,20 @@ async function run() {
       const result = await applications.findOne(query);
       res.send(result)
     })
+
+    app.patch('/applicationPatch/:_id',  async(req, res)=>{
+    const id = req.params._id;
+    const query = {_id: new ObjectId(id)}
+    const updateDoc = {
+        $push: {
+            comments: req.body,
+        }
+
+    };
+    const result = await applications.updateOne(query, updateDoc);
+    console.log(req.body)
+    res.send(result);
+    })
     
 
     app.delete('/application/:_id',  async(req, res)=>{

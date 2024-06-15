@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import SelectedApplicationTable from "./SelectedApplicationTable";
-
+import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
+import { AuthContext } from "../../../Provider/AuthProvider";
+import { extractDateTime } from '../../../../Tools/timeExtractor'
 const SelectedApplication = ({ application }) => {
     const studentsInfo = application.studentDetails
+    const time = extractDateTime()
+    const { user } = useContext(AuthContext)
+    const axiosPublic = useAxiosPublic()
     const universityInfo = application.universityData
-    const statuses =["Application Submitted", "Application Processed", "Documents Missing", "Conditional offer issued", "Unconditional offer issued", "Application Rejected", "CAS issued", "Tuition paid", "Visa Applied", "Visa issued", "Student Enrolled"]
+    const statuses = ["Application Submitted", "Application Processed", "Documents Missing", "Conditional offer issued", "Unconditional offer issued", "Application Rejected", "CAS issued", "Tuition paid", "Visa Applied", "Visa issued", "Student Enrolled"]
+    const [comment, setComment] = useState('')
+    const addComment = { user: user?.displayName, comment: comment, time: time }
+    const submitComment = (id) => {
+        axiosPublic.patch(`/applicationPatch/${id}`, addComment)
+    }
+
+    const changeStatus = (status, id) =>{
+        const addStatus = {user:user?.displayName, status:status, time:time}
+        console.log(addStatus)
+
+    }
 
     const [req, setReq] = useState(1)
     return (
@@ -12,13 +28,25 @@ const SelectedApplication = ({ application }) => {
             <div className="text-xl p-5 pb-0 w-full flex justify-between">
                 <h2 >Application Details</h2>
                 <div className="flex gap-2">
-                    <button className="btn ">Add Comment</button>
+                    <div>
+                        <button className="btn" onClick={() => document.getElementById('my_modal_2').showModal()}>Add Comment</button>
+                        <dialog id="my_modal_2" className="modal">
+                            <div className="modal-box flex justify-center flex-col gap-5">
+                                <h2>Write your comment</h2>
+                                <input onChange={(e) => setComment(e.target.value)} className="w-full p-5 border-2 border-black rounded-lg" type="text" />
+                                <button onClick={() => submitComment(application?._id)} className="btn hover:bg-[#675dd1] hover:text-white mx-auto w-1/3 ">Submit</button>
+                            </div>
+                            <form method="dialog" className="modal-backdrop">
+                                <button>close</button>
+                            </form>
+                        </dialog>
+                    </div>
                     <div>
                         <div className="dropdown dropdown-end">
-                            <div tabIndex={0} role="button" className="btn ">Click</div>
-                            <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                {statuses.map((status)=>
-                                    <li key={status}><a>{status}</a></li>
+                            <div tabIndex={0} role="button" className="btn  ">Change Status</div>
+                            <ul tabIndex={0} className=" dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                {statuses.map((status) =>
+                                    <li onClick={()=>changeStatus(status, application._id)}  key={status}><a>{status}</a></li>
                                 )}
                             </ul>
                         </div>
@@ -72,8 +100,14 @@ const SelectedApplication = ({ application }) => {
                         }
                         {
                             req == 4 &&
-                            <div>
-                                {application?.comments}
+                            <div className="flex flex-col gap-5">
+                                {application?.comments.map((comment, index) =>
+                                    <div className="bg-gray-100 p-5 rounded-lg border-2" key={index}>
+                                        <h2 className="font-bold">{comment?.time}</h2>
+                                        <h2>{comment?.comment}</h2>
+                                        <h2>{comment?.user}</h2>
+                                    </div>
+                                )}
                             </div>
                         }
                     </div>
