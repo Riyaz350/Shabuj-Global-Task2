@@ -4,8 +4,7 @@ import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const UploadData = () => {
   const [data, setData] = useState([]);
-  console.log(data)
-  const [fileName, setFileName] = useState("");  // New state for storing the file name
+   const [fileName, setFileName] = useState(""); 
   const [isDragging, setIsDragging] = useState(false);
   const axiosPublic = useAxiosPublic();
 
@@ -18,7 +17,7 @@ const UploadData = () => {
       const worksheet = workbook.Sheets[sheetName];
       const json = XLSX.utils.sheet_to_json(worksheet);
       setData(json);
-      setFileName(file.name);  // Set the file name state
+      setFileName(file.name); 
     };
     reader.readAsBinaryString(file);
   };

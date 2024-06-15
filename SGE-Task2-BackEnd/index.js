@@ -33,6 +33,7 @@ async function run() {
 
     const users = client.db("SGE").collection("users");
     const uniData = client.db("SGE").collection("uniData");
+    const applications = client.db("SGE").collection("applications");
   
 
     // HANDMADE MIDDLEWARES
@@ -83,13 +84,7 @@ async function run() {
     res.send(result)
   })
 
-  const chunkArray = (array, chunkSize) => {
-    const results = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      results.push(array.slice(i, i + chunkSize));
-    }
-    return results;
-  };
+  
 
   app.post('/uniData', async (req, res) => {
     const usersArray = req.body;  
@@ -101,6 +96,27 @@ async function run() {
       console.error('Error inserting users:', error);
       res.status(500).send({ message: 'Error inserting users', error });
     }})
+
+    // Application data
+
+    app.get('/applications', async(req, res)=>{
+      const result = await applications.find().toArray()
+      res.send(result)
+    })
+
+    app.post(`/applications`, async(req, res)=>{
+      const application = req.body
+      const result = await applications.insertOne(application)
+      console.log('alu')
+      res.send(result)
+    })
+
+    app.delete('/application/:_id',  async(req, res)=>{
+      const id = req.params._id
+      const query = {_id: new ObjectId(id)}
+      const result = await applications.deleteOne(query);
+      res.send(result)
+    })
 
     
 

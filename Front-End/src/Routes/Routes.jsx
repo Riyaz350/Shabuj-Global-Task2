@@ -6,6 +6,7 @@ import PrivateRoute from './PrivateRoute';
 import AdminDashBoard from '../Components/Dashboard/DashBoardComponents/AdminDashBoard';
 import UploadData from '../Components/Dashboard/DashBoardComponents/UploadData';
 import NewApplication from '../Components/Dashboard/DashBoardComponents/NewApplication/NewApplication';
+import ApplicationHistory from '../Components/Dashboard/DashBoardComponents/ApplicationHistory/ApplicationHistory';
 
 const Routes = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const Routes = createBrowserRouter([
         {
           path:'/newApplication',
           element:<NewApplication/>
+        },
+        {
+          path:'/applicationHistory',
+          element:<ApplicationHistory/>
         },
         {
           path:'/upload',
