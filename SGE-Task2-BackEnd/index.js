@@ -58,10 +58,11 @@ async function run() {
     res.send(result)
   })
 
-  app.get('/users/:email', async(req, res)=>{
+  app.get('/user/:email', async(req, res)=>{
     const userEmail = req.params?.email
     const query = {email: userEmail}
     const result = await users.findOne(query)
+    console.log(result)
     res.send(result)
   })
   
@@ -130,6 +131,19 @@ async function run() {
     const result = await applications.updateOne(query, updateDoc);
     console.log(req.body)
     res.send(result);
+    })
+
+
+    app.patch('/applicationPatchStatus/:_id', async(req,res)=>{
+      const id = req.params._id
+      const query = {_id: new ObjectId(id)}
+      const updateDoc = {
+        $set:{
+          status:req.body
+        }
+      }
+      const result  = await applications.updateOne(query, updateDoc)
+      res.send(result)
     })
     
 

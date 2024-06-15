@@ -43,6 +43,7 @@ const LogIn = () => {
                 Swal.fire({position: "top-end", icon: "success", title: "Welcome to Shabuj Global", showConfirmButton: false, timer: 1500});
                 e.target.reset()
                 navigate('/adminDashBoard')
+                location.reload()
             
             })
         .catch((error)=>{

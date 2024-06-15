@@ -104,7 +104,7 @@ const Register = () => {
                 createUser( email, password)
                 .then(()=>{
                 Swal.fire({position: "top-end", icon: "success", title: "Registration Successful", showConfirmButton: false, timer: 1500});
-                const userInfo = {email:email, firstName:firstName,lastName:lastName, number:number,whatsapp:whatsapp, website:website,company:company, countries:countries,  role:'user'}
+                const userInfo = {email:email, firstName:firstName,lastName:lastName, number:number,whatsapp:whatsapp, website:website,company:company, countries:countries,  role:'CP'}
                 axiosPublic.post('/users', userInfo )
                     .then(result=>console.log(result))
                     .catch(error => console.log(error.message))

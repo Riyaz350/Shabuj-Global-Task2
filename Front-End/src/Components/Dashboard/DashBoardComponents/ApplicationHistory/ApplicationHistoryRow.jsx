@@ -55,7 +55,7 @@ const ApplicationHistoryRow = ({ application,  setApplication }) => {
                     <li>{universityInfo?.season}</li>
                 </ul>
             </th>
-            <th className={thStyle}><p className="bg-[#e8e6fc] text-center rounded-lg text-[#887df3] font-semibold">Pending</p></th>
+            <th className={thStyle}><p className="bg-[#e8e6fc] text-center rounded-lg text-[#887df3] font-semibold p-2">{application?.status.status}</p></th>
             <th className={thStyle}>{application?.time}</th>
             <th>
                 <ul className="space-y-5 text-xl">
