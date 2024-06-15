@@ -1,6 +1,6 @@
 # Shabuj Global Live Link
 
-Here is the live link of the project [Live Link](https://git-scm.com/downloads)
+Here is the live link of the project [Live Link](https://shabuj-global-96e16.web.app/adminDashBoard)
 
 # Shabuj Global Admin, ACO and CP credintials
 
