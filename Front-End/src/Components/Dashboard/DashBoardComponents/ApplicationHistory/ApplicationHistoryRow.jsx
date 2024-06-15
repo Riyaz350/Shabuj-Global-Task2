@@ -3,7 +3,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import Swal from 'sweetalert2'
 
-const ApplicationHistoryRow = ({ application, applications, setApplications }) => {
+const ApplicationHistoryRow = ({ application,  setApplication }) => {
 
     const axiosPublic = useAxiosPublic()
 
@@ -39,6 +39,11 @@ const ApplicationHistoryRow = ({ application, applications, setApplications }) =
           });
         
     }
+
+    const handleSearch=(id)=>{
+        axiosPublic.get(`/application/${id}`)
+        .then((data)=>setApplication(data.data))
+    }
     return (
         <tr className="border-b-[1px] font-thin border-gray-300  rounded-lg ">
             <th className={thStyle}>{application?._id}</th>
@@ -54,7 +59,7 @@ const ApplicationHistoryRow = ({ application, applications, setApplications }) =
             <th className={thStyle}>{application?.time}</th>
             <th>
                 <ul className="space-y-5 text-xl">
-                    <li><IoEyeOutline /></li>
+                    <li className="cursor-pointer" onClick={()=>handleSearch(application._id)}><IoEyeOutline /></li>
                     <li className="cursor-pointer" onClick={()=>handleDelete(application._id)}><RiDeleteBin6Line /></li>
                 </ul>
             </th>

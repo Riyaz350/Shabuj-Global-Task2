@@ -7,7 +7,7 @@ import useAxiosPublic from "../../../../../Hooks/useAxiosPublic";
 import {extractDateTime} from '../../../../../Tools/timeExtractor.js'
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
-import AuthProvider, { AuthContext } from "../../../../Provider/AuthProvider.jsx";
+import  { AuthContext } from "../../../../Provider/AuthProvider.jsx";
 
 const StudentsDetails = ({   documents, firstFormData }) => {
     const [selected, setSelected] = useState(0)
@@ -80,7 +80,7 @@ const StudentsDetails = ({   documents, firstFormData }) => {
           }if(!studentsCountry){
             addError(11)
           }else{
-            const data = {cpMail:user?.email, documents:documents, universityData:firstFormData, studentDetails:studentDetails, time:currentTime, status:'Pending', comments:[]}
+            const data = {cpMail:user?.email, documents:documents, universityData:firstFormData, studentDetails:studentDetails, time:currentTime, status:{time:currentTime, status:'Pending'}, comments:[]}
             axiosPublic.post('/applications' , data)
             .then((data)=> {
               if(data.status == 200){

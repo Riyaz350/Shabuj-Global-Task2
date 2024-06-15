@@ -111,6 +111,14 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/application/:_id',  async(req, res)=>{
+      const id = req.params._id
+      const query = {_id: new ObjectId(id)}
+      const result = await applications.findOne(query);
+      res.send(result)
+    })
+    
+
     app.delete('/application/:_id',  async(req, res)=>{
       const id = req.params._id
       const query = {_id: new ObjectId(id)}

@@ -48,7 +48,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* main dashboard */}
-                <div className="flex-1 p-10 bg-[#f8f7fa]">
+                <div className="flex-1 p-10 bg-[#f8f7fa] w-full">
                     <div className="flex justify-between w-full shadow-lg p-5 rounded-lg bg-white">
                         <div className="drawer-content flex flex-col items-center justify-center">
                             <label htmlFor="my-drawer-2" className={`${mid ? "flex" : " invisible "} text-3xl drawer-button`}><RiMenuFill /></label>
