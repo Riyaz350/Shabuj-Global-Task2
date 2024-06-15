@@ -44,7 +44,7 @@ Now, follow these steps to clone the repository to your computer:
     ```bash
     cd repository-name
     ```
-    Replace `repository-name` with the actual name of the repository.
+    Replace `repository-name/Front-End` with the actual name of the repository.
 
 ### 2. Install Project Dependencies
 
