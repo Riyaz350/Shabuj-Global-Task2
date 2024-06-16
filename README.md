@@ -1,6 +1,6 @@
 # Shabuj Global Live Link
 
-Here is the live link of the project [Live Link](https://shabuj-global-96e16.web.app/adminDashBoard)
+Here is the live link of the project [Live Link](https://shabuj-global-96e16.web.app/channelPartnerDashBoard)
 
 # Shabuj Global Admin, ACO and CP credintials
 
