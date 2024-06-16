@@ -5,7 +5,7 @@ Here is the live link of the project [Live Link](https://shabuj-global-96e16.web
 # Shabuj Global Admin, ACO and CP credintials
 
 Admin: admindoe@gmail.com  
-Password: adminjane@gmail.com
+Password: adminjane1234
 
 ACO: acojane@gmail.com
 Password: acojane1234
