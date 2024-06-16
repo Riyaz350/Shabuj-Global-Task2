@@ -14,7 +14,7 @@ const Routes = createBrowserRouter([
       element: <PrivateRoute><Dashboard/></PrivateRoute>,
       children:[
         {
-          path:'/adminDashboard',
+          path:'/channelPartnerDashboard',
           element:<AdminDashBoard/>
         },
         {

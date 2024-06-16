@@ -37,7 +37,7 @@ const Dashboard = () => {
                             <ul className="menu p-4 text-2xl w-fit min-h-full space-y-2 text-white font-bold  bg-[#30344c]">
                                 {/* Sidebar content here */}
                                 <li><h2 >Shabuj Global</h2></li>
-                                <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/adminDashBoard"><FaRegEnvelopeOpen />Dashboard</NavLink>
+                                <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/channelPartnerDashboard"><FaRegEnvelopeOpen />Dashboard</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/newApplication"><MdOutlineDashboardCustomize className="text-2xl" />New Application</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/applicationHistory"><MdOutlineDashboardCustomize className="text-2xl" />Application History</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/upload"><IoCloudUploadOutline className="text-2xl" />Upload University Data</NavLink>

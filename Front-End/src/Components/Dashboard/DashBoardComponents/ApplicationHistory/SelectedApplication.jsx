@@ -4,7 +4,7 @@ import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { extractDateTime } from '../../../../Tools/timeExtractor'
 const SelectedApplication = ({ application }) => {
-    const studentsInfo = application.studentDetails
+    const studentsInfo = application?.studentDetails
     const time = extractDateTime()
     const { user } = useContext(AuthContext)
     const axiosPublic = useAxiosPublic()
@@ -12,7 +12,9 @@ const SelectedApplication = ({ application }) => {
     const [comment, setComment] = useState('')
     const [req, setReq] = useState(1)
     const [userData, setUserData] = useState(null)
+    console.log(userData?.role)
     const addComment = { user: user?.displayName, comment: comment, time: time }
+
     const submitComment = (id) => {
             axiosPublic.patch(`/applicationPatch/${id}`, addComment)
     }
@@ -26,13 +28,13 @@ const SelectedApplication = ({ application }) => {
     useEffect(()=>{
         axiosPublic.get(`/user/${user?.email}`)
         .then(data=>setUserData(data.data))
-    },[])
+    },[axiosPublic, user?.email])
 
     return (
         <div className="">
             <div className="text-xl p-5 pb-0 w-full flex justify-between">
                 <h2 >Application Details</h2>
-                {userData?.role == 'Admin' || userData?.role == 'ACO' &&
+                {userData?.role == 'Admin' | userData?.role == 'ACO'  &&
                 <div className="flex gap-2">
                 <div>
                     <button className="btn" onClick={() => document.getElementById('my_modal_2').showModal()}>Add Comment</button>
@@ -74,10 +76,10 @@ const SelectedApplication = ({ application }) => {
                             req === 1 &&
                             <div className="w-full ">
                                 <SelectedApplicationTable prop1={"Application ID"} prop2={application?._id} prop3={'Date Added'} prop4={application?.time} />
-                                <SelectedApplicationTable prop1={"Student ID"} prop2={'pFthcipKvH'} prop3={'Student Passport No'} prop4={studentsInfo.passportNo} />
-                                <SelectedApplicationTable prop1={"Student Name"} prop2={studentsInfo.firstName + " " + studentsInfo.lastName} prop3={'Student Date of Birth	'} prop4={studentsInfo.birthDate} />
-                                <SelectedApplicationTable prop1={"Student E-Mail"} prop2={studentsInfo.studentMail} prop3={'Student Phone No'} prop4={studentsInfo.whatsapp} />
-                                <SelectedApplicationTable prop1={"Communication E-Mail "} prop2={studentsInfo.counsellorMail} prop3={'Communication Phone No'} prop4={studentsInfo.counsellorNo} />
+                                <SelectedApplicationTable prop1={"Student ID"} prop2={'pFthcipKvH'} prop3={'Student Passport No'} prop4={studentsInfo?.passportNo} />
+                                <SelectedApplicationTable prop1={"Student Name"} prop2={studentsInfo?.firstName + " " + studentsInfo?.lastName} prop3={'Student Date of Birth	'} prop4={studentsInfo?.birthDate} />
+                                <SelectedApplicationTable prop1={"Student E-Mail"} prop2={studentsInfo?.studentMail} prop3={'Student Phone No'} prop4={studentsInfo?.whatsapp} />
+                                <SelectedApplicationTable prop1={"Communication E-Mail "} prop2={studentsInfo?.counsellorMail} prop3={'Communication Phone No'} prop4={studentsInfo?.counsellorNo} />
                             </div>
                         }
                         {
@@ -97,9 +99,9 @@ const SelectedApplication = ({ application }) => {
                                     </thead>
                                     <tbody >
                                         <tr>
-                                            <th>{application?.status.time}</th>
-                                            <th>{application?.status.status}</th>
-                                            <th>{application?.status.status}</th>
+                                            <th>{application?.status?.time}</th>
+                                            <th>{application?.status?.status}</th>
+                                            <th>{application?.status?.status}</th>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -108,7 +110,7 @@ const SelectedApplication = ({ application }) => {
                         {
                             req == 4 &&
                             <div className="flex flex-col gap-5">
-                                {application?.comments.map((comment, index) =>
+                                {application?.comments?.map((comment, index) =>
                                     <div className="bg-gray-100 p-5 rounded-lg border-2" key={index}>
                                         <h2 className="font-bold">{comment?.time}</h2>
                                         <h2>{comment?.comment}</h2>
