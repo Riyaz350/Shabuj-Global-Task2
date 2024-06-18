@@ -81,6 +81,7 @@ const StudentsDetails = ({   documents, firstFormData }) => {
             addError(11)
           }else{
             const data = {cpMail:user?.email, documents:documents, universityData:firstFormData, studentDetails:studentDetails, time:currentTime, status:{time:currentTime, status:'Pending'}, comments:[]}
+            console.log(data)
             axiosPublic.post('/applications' , data)
             .then((data)=> {
               if(data.status == 200){

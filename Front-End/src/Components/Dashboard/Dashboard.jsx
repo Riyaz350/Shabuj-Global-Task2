@@ -10,7 +10,7 @@ import { MdOutlineDashboardCustomize } from "react-icons/md";
 
 const Dashboard = () => {
     const [mid, setMid] = useState(false)
-    const { logOut } = useContext(AuthContext)
+    const { logOut, userData } = useContext(AuthContext)
 
     const active = 'flex items-center gap-3 font-semibold bg-[#675dd1] p-4 py-2 text-lg hover:bg-[#675dd1] w-full border-[#ffffff] text-[#ffffff] rounded-lg '
     const inActive = 'flex items-center gap-3  shadow-none p-4 py-2 text-lg  text-gray-300 font-semibold  w-full     border-transparent rounded-lg hover:bg-[#383c52]   hover:text-[#ffffff]'
@@ -40,7 +40,9 @@ const Dashboard = () => {
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/channelPartnerDashboard"><FaRegEnvelopeOpen />Dashboard</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/newApplication"><MdOutlineDashboardCustomize className="text-2xl" />New Application</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/applicationHistory"><MdOutlineDashboardCustomize className="text-2xl" />Application History</NavLink>
+                                {Object.keys(userData).length > 0 && userData?.role == 'Admin' &&
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/upload"><IoCloudUploadOutline className="text-2xl" />Upload University Data</NavLink>
+                                }
                             </ul>
 
                         </div>

@@ -12,7 +12,6 @@ const SelectedApplication = ({ application }) => {
     const [comment, setComment] = useState('')
     const [req, setReq] = useState(1)
     const [userData, setUserData] = useState(null)
-    console.log(userData?.role)
     const addComment = { user: user?.displayName, comment: comment, time: time }
 
     const submitComment = (id) => {
