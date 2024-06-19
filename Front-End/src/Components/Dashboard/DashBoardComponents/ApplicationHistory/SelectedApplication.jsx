@@ -5,6 +5,7 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 import { extractDateTime } from '../../../../Tools/timeExtractor'
 import DocumentUpdater from "./DocumentUpdater";
 import Swal from "sweetalert2";
+import DocumentUploader from "../NewApplication/Document/DocumentUploader";
 const SelectedApplication = ({ application }) => {
     const studentsInfo = application?.studentDetails
     const time = extractDateTime()
@@ -14,35 +15,43 @@ const SelectedApplication = ({ application }) => {
     const [comment, setComment] = useState('')
     const [req, setReq] = useState(1)
     const [userData, setUserData] = useState(null)
-    const addComment = { user: user?.displayName, comment: comment, time: time, status:'notRead' }
+    const [documents, setDocuments] = useState([])
+    const addComment = { user: user?.displayName, comment: comment, time: time, status: 'notRead' }
 
     const submitComment = (id) => {
         comment && axiosPublic.patch(`/applicationPatch/${id}`, addComment)
-        .then((data) => {
-            if (data?.status == 200) {
-                setComment('')
-                Swal.fire({ position: "top-end", icon: "success", title: "Comment added", showConfirmButton: false, timer: 1500 });
-            }
-        })
-        
+            .then((data) => {
+                if (data?.status == 200) {
+                    setComment('')
+                    Swal.fire({ position: "top-end", icon: "success", title: "Comment added", showConfirmButton: false, timer: 1500 });
+                }
+            })
+
 
     }
 
     const changeStatus = (id, status) => {
         const addStatus = { user: user?.displayName, status: status, time: time }
         axiosPublic.patch(`/applicationPatchStatus/${id}`, addStatus)
-        .then((data)=>{
-            if(data?.status == 200){
-                Swal.fire({ position: "top-end", icon: "success", title: "Status Changed", showConfirmButton: false, timer: 1500 });
-            }
-        })
+            .then((data) => {
+                if (data?.status == 200) {
+                    Swal.fire({ position: "top-end", icon: "success", title: "Status Changed", showConfirmButton: false, timer: 1500 });
+                }
+            })
 
     }
 
     useEffect(() => {
         axiosPublic.get(`/user/${user?.email}`)
             .then(data => setUserData(data.data))
-    }, [axiosPublic, user?.email])
+        if(documents?.length >0 ){
+            documents.map((document)=>
+                axiosPublic.patch(`/applicationPatchDocument/${application?._id}`, document)
+            .then(data=>data?.status == 200 && alert('document added'))
+            )
+            setDocuments([])
+        }
+    }, [axiosPublic, user?.email,documents])
 
     return (
         <div className="w-max">
@@ -57,10 +66,10 @@ const SelectedApplication = ({ application }) => {
                                     <h2>Write your comment</h2>
                                     <input value={comment} onChange={(e) => setComment(e.target.value)} className="w-full p-5 border-2 border-black rounded-lg" type="text" />
                                     <form method="dialog" className="modal-backdrop">
-                                        <button className="btn hover:bg-[#675dd1] hover:text-white mx-auto w-1/3 ">{comment? 'Submit':'Close'}</button>
+                                        <button className="btn hover:bg-[#675dd1] hover:text-white mx-auto w-1/3 ">{comment ? 'Submit' : 'Close'}</button>
                                     </form>
                                 </div>
-                                
+
 
                             </dialog>
                         </div>
@@ -100,10 +109,11 @@ const SelectedApplication = ({ application }) => {
                         {
                             req == 2 &&
                             <div>
+                                <DocumentUploader setDocuments={setDocuments} />
                                 {application?.documents?.map((applicationData) =>
                                     <div key={application?.name}>
                                         <h1>{applicationData?.name}</h1>
-                                        <DocumentUpdater applicationData={applicationData} />
+                                        <DocumentUpdater  applicationData={applicationData} />
                                     </div>
                                 )}
                             </div>

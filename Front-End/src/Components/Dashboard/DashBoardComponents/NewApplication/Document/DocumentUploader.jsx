@@ -13,7 +13,7 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
     if (file?.type?.startsWith('image/') || file?.type?.startsWith('application/pdf')) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const base64String = reader.result.split(',')[1]; 
+        const base64String = reader.result.split(',')[1];
         setFileData(prevFiles => [...prevFiles, { string: base64String, name: file.name, type: file.type }]);
       };
       reader.readAsDataURL(file);
@@ -57,12 +57,12 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
             <div className='flex flex-col gap-2'>
               {fileData.map((data, index) =>
                 <div className='shadow-lg rounded-lg text-xl p-5 bg-white' key={index}>
-                  
-                    <div>
-                      <h1>{data?.name}</h1>
-                      <DocumentViewer base64String={data?.string} type={data?.type}/>
-                    </div>
-                  
+
+                  <div>
+                    <h1>{data?.name}</h1>
+                    <DocumentViewer base64String={data?.string} type={data?.type} />
+                  </div>
+
                 </div>
               )}
             </div>

@@ -91,7 +91,7 @@ async function run() {
     app.post('/uniData', async (req, res) => {
       const uniDataArray = req.body;
       // console.log(req?.body)
-      const uniDataObject =uniDataArray.map((data) => ({
+      const uniDataObject = uniDataArray.map((data) => ({
         'Country': data[0] ?? 'n/a',
         'University Name': data[1] ?? 'n/a',
         'Intake List': data[2] ?? 'n/a',
@@ -134,6 +134,17 @@ async function run() {
           comments: req.body,
         }
 
+      };
+      const result = await applications.updateOne(query, updateDoc);
+      res.send(result);
+    })
+    app.patch('/applicationPatchDocument/:_id', async (req, res) => {
+      const id = req.params._id;
+      const query = { _id: new ObjectId(id) }
+      const updateDoc = {
+        $push: {
+          documents: req.body,
+        }
       };
       const result = await applications.updateOne(query, updateDoc);
       res.send(result);
