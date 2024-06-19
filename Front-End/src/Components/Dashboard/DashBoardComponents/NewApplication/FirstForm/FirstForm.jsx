@@ -11,6 +11,7 @@ const FirstForm = ({ serial, setSerial, uniData, setFirstFormData}) => {
     const [typeOfCourse, setTypeOfCourse] = useState("")
     const [applicantCountry, setApplicantCountry] = useState("")
     const countries = ['Bangladesh', 'India', 'Nigeria', 'Bhutan', 'Ghana', 'Sri Lanka']
+    const typesOfCourses = ['Undergraduate', 'Postgraduate']
 
     
     const filter = (category) => {
@@ -18,7 +19,7 @@ const FirstForm = ({ serial, setSerial, uniData, setFirstFormData}) => {
       }
 
     const filter2 = (category, category2, category3) => {
-        return [... new Set(uniData.filter((uni) => uni?.[category] == category3).map((uni)=>uni?.[category2]))];
+        return [... new Set(uniData.filter((uni) => uni?.[category] == category3 && uni?.[category2] !== 'Intake List' && uni?.[category2] !== 'Course Type').map((uni)=>uni?.[category2]))];
       }
     const filter3 = (category, category2, category3, category4, category5, category6, category7) => {
         return [... new Set(uniData.filter((uni) => uni?.[category] === category2 && uni?.[category3] === category4 && uni?.[category5] === category6).map((uni)=>uni?.[category7]))];
@@ -59,7 +60,7 @@ const FirstForm = ({ serial, setSerial, uniData, setFirstFormData}) => {
                         <Form int={1} label='Country to Apply' state={country} setState={setCountry}  filterer={filter('Country')} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors} />
                         <Form int={2} label='Country of Student Passport' state={applicantCountry}  setState={setApplicantCountry}  dataArray={countries} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
                         <Form int={3} label='Intake' state={season}  setState={setSeason}  filterer={filter2('Country','Intake List', country)} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
-                        <Form int={4} label='Course Type' state={typeOfCourse}  setState={setTypeOfCourse} filterer={filter2('Country','Course Type', country)} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
+                        <Form int={4} label='Course Type' state={typeOfCourse}  setState={setTypeOfCourse} dataArray={typesOfCourses} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
                         <Form int={5} label='University' state={uni} setState={setUni}  filterer={filter3('Country', country,'Course Type', typeOfCourse,'Intake List', season, 'University Name')} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
                         <Form int={6} label='Course' state={course} setState={setCourse}  filterer={filter3('University Name', uni,'Course Type', typeOfCourse,'Intake List', season, 'Course Name')} selected={selected} setSelected={setSelected} errors={errors} setErrors={setErrors}/>
 

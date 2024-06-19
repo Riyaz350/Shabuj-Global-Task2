@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { saveAs } from 'file-saver';
-const DocumentDownloader = ({  applicationData }) => {
+import  { useEffect, useState } from 'react';
+
+const DocumentViewer = ({ base64String, type }) => {
   const [dataUrl, setDataUrl] = useState('');
 
   const convertBase64ToBlob = (base64, contentType) => {
@@ -23,35 +23,28 @@ const DocumentDownloader = ({  applicationData }) => {
     return blob;
   };
 
-  const handlePreview = () => {
-    const contentType = applicationData?.type;
-    const pdfBlob = convertBase64ToBlob(applicationData?.string, contentType);
+  useEffect(()=>{
+    const contentType = type;
+    const pdfBlob = convertBase64ToBlob(base64String, contentType);
     const url = URL.createObjectURL(pdfBlob);
     setDataUrl(url);
-  };
-
-  const handleDownload = () => {
-    const contentType = 'application/pdf';
-    const pdfBlob = convertBase64ToBlob(applicationData?.string, contentType);
-    saveAs(pdfBlob, applicationData?.name);
-  };
+  },[base64String, type])
+  
 
   return (
-    <div className='flex flex-col'>
-      <button onClick={handlePreview}>Preview</button>
-      <button onClick={handleDownload}>Download</button>
+    <div className='flex flex-col '>
+      
       {dataUrl && (
         <iframe
           src={dataUrl}
-          title="Preview"
-          width="600"
+          title="Data Preview"
+          width="100%"
           height="400"
           style={{ border: 'none', marginTop: '20px' }}
         />
       )}
     </div>
   );
-
 };
 
-export default DocumentDownloader;
+export default DocumentViewer;

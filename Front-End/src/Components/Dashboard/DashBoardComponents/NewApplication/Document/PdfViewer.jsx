@@ -1,8 +1,8 @@
 import  { useEffect, useState } from 'react';
 import { saveAs } from 'file-saver';
 
-const PdfViewer = ({ base64String, type }) => {
-  const [dataUrl, setDataUrl] = useState('');
+const PdfViewer = ({ base64String }) => {
+  const [pdfUrl, setPdfUrl] = useState('');
 
   const convertBase64ToBlob = (base64, contentType) => {
     const byteCharacters = atob(base64);
@@ -25,21 +25,21 @@ const PdfViewer = ({ base64String, type }) => {
   };
 
   useEffect(()=>{
-    const contentType = type;
+    const contentType = 'application/pdf';
     const pdfBlob = convertBase64ToBlob(base64String, contentType);
     const url = URL.createObjectURL(pdfBlob);
-    setDataUrl(url);
-  },[base64String, type])
+    setPdfUrl(url);
+  },[base64String])
   
 
   return (
     <div className='flex flex-col '>
       
-      {dataUrl && (
+      {pdfUrl && (
         <iframe
-          src={dataUrl}
-          title="Data Preview"
-          width="100%"
+          src={pdfUrl}
+          title="PDF Preview"
+          width="600"
           height="400"
           style={{ border: 'none', marginTop: '20px' }}
         />

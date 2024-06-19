@@ -4,6 +4,7 @@ import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { extractDateTime } from '../../../../Tools/timeExtractor'
 import DocumentUpdater from "./DocumentUpdater";
+import Swal from "sweetalert2";
 const SelectedApplication = ({ application }) => {
     const studentsInfo = application?.studentDetails
     const time = extractDateTime()
@@ -13,53 +14,67 @@ const SelectedApplication = ({ application }) => {
     const [comment, setComment] = useState('')
     const [req, setReq] = useState(1)
     const [userData, setUserData] = useState(null)
-    const addComment = { user: user?.displayName, comment: comment, time: time }
+    const addComment = { user: user?.displayName, comment: comment, time: time, status:'notRead' }
 
     const submitComment = (id) => {
-            axiosPublic.patch(`/applicationPatch/${id}`, addComment)
+        comment && axiosPublic.patch(`/applicationPatch/${id}`, addComment)
+        .then((data) => {
+            if (data?.status == 200) {
+                setComment('')
+                Swal.fire({ position: "top-end", icon: "success", title: "Comment added", showConfirmButton: false, timer: 1500 });
+            }
+        })
+        
+
     }
 
-    const changeStatus = ( id, status) =>{
-        const addStatus = {user:user?.displayName, status:status, time:time}
+    const changeStatus = (id, status) => {
+        const addStatus = { user: user?.displayName, status: status, time: time }
         axiosPublic.patch(`/applicationPatchStatus/${id}`, addStatus)
+        .then((data)=>{
+            if(data?.status == 200){
+                Swal.fire({ position: "top-end", icon: "success", title: "Status Changed", showConfirmButton: false, timer: 1500 });
+            }
+        })
 
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         axiosPublic.get(`/user/${user?.email}`)
-        .then(data=>setUserData(data.data))
-    },[axiosPublic, user?.email])
+            .then(data => setUserData(data.data))
+    }, [axiosPublic, user?.email])
 
     return (
-        <div className="">
+        <div className="w-max">
             <div className="text-xl p-5 pb-0 w-full flex justify-between">
                 <h2 >Application Details</h2>
-                {userData?.role == 'Admin' | userData?.role == 'ACO'  &&
-                <div className="flex gap-2">
-                <div>
-                    <button className="btn" onClick={() => document.getElementById('my_modal_2').showModal()}>Add Comment</button>
-                    <dialog id="my_modal_2" className="modal">
-                        <div className="modal-box flex justify-center flex-col gap-5">
-                            <h2>Write your comment</h2>
-                            <input onChange={(e) => setComment(e.target.value)} className="w-full p-5 border-2 border-black rounded-lg" type="text" />
-                            <button onClick={() => submitComment(application?._id)} className="btn hover:bg-[#675dd1] hover:text-white mx-auto w-1/3 ">Submit</button>
+                {userData?.role == 'Admin' | userData?.role == 'ACO' &&
+                    <div className="flex gap-2">
+                        <div>
+                            <button className="btn" onClick={() => document.getElementById('my_modal_1').showModal()}>Add Comment</button>
+                            <dialog onSubmit={() => submitComment(application?._id)} id="my_modal_1" className="modal">
+                                <div className="modal-box flex justify-center flex-col gap-5">
+                                    <h2>Write your comment</h2>
+                                    <input value={comment} onChange={(e) => setComment(e.target.value)} className="w-full p-5 border-2 border-black rounded-lg" type="text" />
+                                    <form method="dialog" className="modal-backdrop">
+                                        <button className="btn hover:bg-[#675dd1] hover:text-white mx-auto w-1/3 ">{comment? 'Submit':'Close'}</button>
+                                    </form>
+                                </div>
+                                
+
+                            </dialog>
                         </div>
-                        <form method="dialog" className="modal-backdrop">
-                            <button>close</button>
-                        </form>
-                    </dialog>
-                </div>
-                <div>
-                    <div className="dropdown dropdown-end">
-                        <div tabIndex={0} role="button" className="btn  ">Change Status</div>
-                        <ul tabIndex={0} className=" dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            {statuses.map((status) =>
-                                <li onClick={()=>changeStatus( application._id, status)}  key={status}><a>{status}</a></li>
-                            )}
-                        </ul>
+                        <div>
+                            <div className="dropdown dropdown-end">
+                                <div tabIndex={0} role="button" className="btn  ">Change Status</div>
+                                <ul tabIndex={0} className=" dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                    {statuses.map((status) =>
+                                        <li onClick={() => changeStatus(application._id, status)} key={status}><a>{status}</a></li>
+                                    )}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
                 }
             </div>
             <div className="w-full">
@@ -73,7 +88,7 @@ const SelectedApplication = ({ application }) => {
                     </div>
                     <div className="p-5 w-full">
                         {
-                            req === 1 &&
+                            req == 1 &&
                             <div className="w-full ">
                                 <SelectedApplicationTable prop1={"Application ID"} prop2={application?._id} prop3={'Date Added'} prop4={application?.time} />
                                 <SelectedApplicationTable prop1={"Student ID"} prop2={'pFthcipKvH'} prop3={'Student Passport No'} prop4={studentsInfo?.passportNo} />
@@ -85,12 +100,11 @@ const SelectedApplication = ({ application }) => {
                         {
                             req == 2 &&
                             <div>
-                                {application?.documents.map((applicationData, index)=>
-                                <div key={index}>
-                                    {applicationData?.type?.startsWith('/application') &&
-                                    <DocumentUpdater base64String={applicationData?.string}/>
-                                    }
-                                </div>
+                                {application?.documents?.map((applicationData) =>
+                                    <div key={application?.name}>
+                                        <h1>{applicationData?.name}</h1>
+                                        <DocumentUpdater applicationData={applicationData} />
+                                    </div>
                                 )}
                             </div>
                         }

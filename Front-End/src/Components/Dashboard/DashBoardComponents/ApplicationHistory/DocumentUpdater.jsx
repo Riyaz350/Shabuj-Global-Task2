@@ -1,11 +1,9 @@
-import PdfViewer from "../NewApplication/Document/PdfViewer";
 import DocumentDownloader from "./DocumentDownloader";
 
-const DocumentUpdater = ({base64String}) => {
+const DocumentUpdater = ({applicationData}) => {
     return (
         <div>
-            <PdfViewer base64String={base64String}/>
-            <DocumentDownloader/>
+            <DocumentDownloader applicationData={applicationData}/>
         </div>
     );
 };

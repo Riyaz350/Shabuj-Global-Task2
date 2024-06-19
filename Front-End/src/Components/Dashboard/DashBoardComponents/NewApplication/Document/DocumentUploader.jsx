@@ -1,9 +1,8 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
-import PdfViewer from './PdfViewer';
+import DocumentViewer from './DocumentViewer';
 
 const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
   const [isDragging, setIsDragging] = useState(false);
@@ -24,10 +23,6 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
 
   };
 
-  
-
-
-
   const handleDragEnter = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -47,8 +42,6 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
 
   };
 
-
-
   useEffect(() => {
     setDocuments(fileData)
   }, [fileData, setDocuments])
@@ -67,7 +60,7 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
                   
                     <div>
                       <h1>{data?.name}</h1>
-                      <PdfViewer base64String={data?.string} type={data?.type}/>
+                      <DocumentViewer base64String={data?.string} type={data?.type}/>
                     </div>
                   
                 </div>

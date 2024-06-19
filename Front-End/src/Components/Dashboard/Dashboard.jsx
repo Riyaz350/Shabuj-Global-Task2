@@ -10,8 +10,11 @@ import { MdOutlineDashboardCustomize } from "react-icons/md";
 
 const Dashboard = () => {
     const [mid, setMid] = useState(false)
-    const { logOut, userData } = useContext(AuthContext)
-
+    const [commentNo, setCommentNo] = useState(0)
+    console.log(commentNo)
+    const { logOut, userData, usersApplications } = useContext(AuthContext)
+    const notReadComments = usersApplications.filter((application) => application?.comments?.map((comment) => comment.status === 'notRead'))
+    console.log(notReadComments)
     const active = 'flex items-center gap-3 font-semibold bg-[#675dd1] p-4 py-2 text-lg hover:bg-[#675dd1] w-full border-[#ffffff] text-[#ffffff] rounded-lg '
     const inActive = 'flex items-center gap-3  shadow-none p-4 py-2 text-lg  text-gray-300 font-semibold  w-full     border-transparent rounded-lg hover:bg-[#383c52]   hover:text-[#ffffff]'
 
@@ -22,6 +25,9 @@ const Dashboard = () => {
         } else {
             return
         }
+        // if(notReadComments?.length>0){
+        //     notReadComments?.map((application)=>
+        //         setCommentNo(application?.comments.length + commentNo) )       }
     }, [setMid])
 
     return (
@@ -41,7 +47,7 @@ const Dashboard = () => {
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/newApplication"><MdOutlineDashboardCustomize className="text-2xl" />New Application</NavLink>
                                 <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/applicationHistory"><MdOutlineDashboardCustomize className="text-2xl" />Application History</NavLink>
                                 {Object.keys(userData).length > 0 && userData?.role == 'Admin' &&
-                                <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/upload"><IoCloudUploadOutline className="text-2xl" />Upload University Data</NavLink>
+                                    <NavLink className={({ isActive, isPending }) => isPending ? "pending" : isActive ? active : inActive} to="/upload"><IoCloudUploadOutline className="text-2xl" />Upload University Data</NavLink>
                                 }
                             </ul>
 
@@ -56,7 +62,24 @@ const Dashboard = () => {
                             <label htmlFor="my-drawer-2" className={`${mid ? "flex" : " invisible "} text-3xl drawer-button`}><RiMenuFill /></label>
                         </div>
                         <div className="text-3xl  flex">
-                            <p className="w-fit rounded-full p-1"><CiBellOn /></p>
+
+                            {/* notifications */}
+                            <div className="dropdown dropdown-end mx-2 lg:mx-3">
+                                <div tabIndex={0} role="button" className="relative  ">
+                                    <p className="absolute right-0 text-xs lg:text-sm bg-red-500 text-white p-1 rounded-full px-2">{commentNo}</p>
+                                    <p className="w-fit rounded-full p-1"><CiBellOn className=" lg:text-4xl" /></p>
+                                </div>
+                                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                                    {notReadComments?.map((application)=>
+                                    application?.comments.map((comment)=>
+                                        <li key={comment?.comment}><a>{comment?.user} commented on your application for {application?.studentDetails?.firstName+application?.studentDetails?.lastName}</a></li>
+                                    )
+                                    )}
+                                </ul>
+
+                            </div>
+
+                            {/* users info and logout */}
                             <div className="dropdown dropdown-end">
                                 <p tabIndex={0} role="button" className=" bg-purple-200 w-fit rounded-full p-1"><LuUser /></p>
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu  shadow bg-base-100 rounded-box w-52">
