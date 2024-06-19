@@ -26,7 +26,7 @@ const NewApplication = () => {
 
 
     return (
-        <div className="mt-5  rounded-lg p-5 md:grid grid-cols-4 gap-2">
+        <div className="mt-5  rounded-lg p-5 lg:grid grid-cols-4 gap-2">
             {/* UNI DATA */}
             {serial > 0 &&
                 <UniData uni={firstFormData?.uni} season={firstFormData?.season} course={firstFormData?.course} typeOfCourse={firstFormData?.typeOfCourse} country={firstFormData?.country} />

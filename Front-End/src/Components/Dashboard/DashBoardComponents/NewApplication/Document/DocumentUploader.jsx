@@ -69,10 +69,12 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
           }
         </div>
 
-        <div className="flex justify-between">
-          <button onClick={() => setSerial(serial - 1)} className="btn bg-gray-400 text-lg text-white  font-bold">Back</button>
-          <button onClick={() => setSerial(serial + 1)} className="btn btn-primary text-lg text-white  font-bold">Next</button>
-        </div>
+        {serial &&
+          <div className="flex justify-between">
+            <button onClick={() => setSerial(serial - 1)} className="btn bg-gray-400 text-lg text-white  font-bold">Back</button>
+            <button onClick={() => setSerial(serial + 1)} className="btn btn-primary text-lg text-white  font-bold">Next</button>
+          </div>
+        }
       </div>
     </div>
   );
