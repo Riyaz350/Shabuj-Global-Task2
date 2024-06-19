@@ -1,43 +1,32 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Document, Page } from 'react-pdf';
 
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 import PdfViewer from './PdfViewer';
 
 const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
-  const [jsonString, setJsonString] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [empty, setEmpty] = useState(false)
   const [fileData, setFileData] = useState([])
-  console.log(fileData)
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0]
-    if (file?.type?.startsWith('image/')) {
-      const formData = new FormData()
-      formData.append('file', file)
-      formData.append("upload_preset", 'qu7exu28')
-      formData.append("cloud_name", 'dija36qyv')
-      axios.post(`https://api.cloudinary.com/v1_1/dija36qyv/raw/upload`, formData)
-        .then(res => setFileData(prevFiles => [...prevFiles, { url: res.data.url, name: file.name, type: file.type }]))
-
-    }  else {
-      alert('Please upload an image')
+    if (file?.type?.startsWith('image/') || file?.type?.startsWith('application/pdf')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result.split(',')[1]; 
+        setFileData(prevFiles => [...prevFiles, { string: base64String, name: file.name, type: file.type }]);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      alert('Please upload a pdf or image')
     }
 
   };
 
-  const handleNext = () => {
-    if (fileData.length == 0) {
-      setEmpty(true)
-    } else {
-      setEmpty(false)
-      setSerial(serial + 1)
-    }
-  }
+  
+
+
 
   const handleDragEnter = (e) => {
     e.preventDefault();
@@ -59,9 +48,9 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
   };
 
 
+
   useEffect(() => {
     setDocuments(fileData)
-    
   }, [fileData, setDocuments])
   return (
     <div>
@@ -75,26 +64,21 @@ const DocumentUploader = ({ setSerial, serial, setDocuments }) => {
             <div className='flex flex-col gap-2'>
               {fileData.map((data, index) =>
                 <div className='shadow-lg rounded-lg text-xl p-5 bg-white' key={index}>
-                  <h1>{data?.name}</h1>
-                  {data?.type?.startsWith('image/') ?
+                  
                     <div>
-                      <img src={data?.url} alt="" />
-                    </div> :
-                    <div>
-                      
-
+                      <h1>{data?.name}</h1>
+                      <PdfViewer base64String={data?.string} type={data?.type}/>
                     </div>
-                  }
+                  
                 </div>
               )}
             </div>
           }
         </div>
 
-        <h2 className={`${!empty ? 'invisible' : (fileData.length > 0 ? 'invisible' : 'visible')} text-red-500 font-bold text-center`}>Please upload your documents</h2>
         <div className="flex justify-between">
           <button onClick={() => setSerial(serial - 1)} className="btn bg-gray-400 text-lg text-white  font-bold">Back</button>
-          <button onClick={handleNext} className="btn btn-primary text-lg text-white  font-bold">Next</button>
+          <button onClick={() => setSerial(serial + 1)} className="btn btn-primary text-lg text-white  font-bold">Next</button>
         </div>
       </div>
     </div>

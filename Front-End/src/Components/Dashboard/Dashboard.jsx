@@ -62,7 +62,7 @@ const Dashboard = () => {
                                 <ul tabIndex={0} className="dropdown-content z-[1] menu  shadow bg-base-100 rounded-box w-52">
                                     <li className="w-full flex items-center flex-row p-5 border-b-[1px] border-gray-300">
                                         <p tabIndex={0} role="button" className="text-3xl bg-purple-200 w-fit rounded-full p-1"><LuUser /></p>
-                                        <p>admin</p>
+                                        <p>{userData?.role}</p>
                                     </li>
                                     <li>
                                         <p className="text-lg"><LuUser className="pr-2 text-3xl" /> Profile</p>

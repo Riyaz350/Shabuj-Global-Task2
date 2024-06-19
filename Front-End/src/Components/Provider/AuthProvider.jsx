@@ -38,29 +38,11 @@ const AuthProvider = ({children}) => {
         axiosPublic.get(`/user/${user?.email}`)
         .then(data=>setUserData(data.data))
         const unSubscribe = onAuthStateChanged(auth, currentUser =>{
-            const userEmail = currentUser?.email || user?.email 
-            const loggedUser = {email: userEmail}
+             
             
             setUser(currentUser)
             setLoading(false)
-            if(currentUser){
-
-                const userEmail = {email: currentUser.email}
-                // create token
-                // axiosPublic.post('/jwt', userEmail )
-                // .then(res =>{
-                //     if(res.data.token){
-                //         localStorage.setItem('access-token', res.data.token)
-                //         setLoading(false);
-
-                //     }
-                // })
-            }
-            else{
-
-                localStorage.removeItem('access-token')
-                setLoading(false);
-            }
+             
         })
         return()=>{
           unSubscribe()  

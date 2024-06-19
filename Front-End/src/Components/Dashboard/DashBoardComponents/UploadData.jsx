@@ -4,7 +4,8 @@ import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const UploadData = () => {
   const [data, setData] = useState([]);
-   const [fileName, setFileName] = useState(""); 
+  
+  const [fileName, setFileName] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const axiosPublic = useAxiosPublic();
 
@@ -15,9 +16,9 @@ const UploadData = () => {
       const workbook = XLSX.read(binaryStr, { type: "binary" });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
-      const json = XLSX.utils.sheet_to_json(worksheet);
+      const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
       setData(json);
-      setFileName(file.name); 
+      setFileName(file.name);
     };
     reader.readAsBinaryString(file);
   };
@@ -60,29 +61,35 @@ const UploadData = () => {
     }
   };
 
-  const chunkArray = (array, chunkSize) => {
-    const results = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      results.push(array.slice(i, i + chunkSize));
+  const processSPData = (spreadSheetJson) => {
+    const processedSpreadSheetData = [];
+    let savedUniversityName = 'n/a';
+    for (let i = 0; i < spreadSheetJson.length; i += 1) {
+      !spreadSheetJson[i][1] ? spreadSheetJson[i][1] = savedUniversityName : savedUniversityName = spreadSheetJson[i][1];
+      processedSpreadSheetData.push(spreadSheetJson[i])
     }
-    return results;
+
+    return processedSpreadSheetData;
+    
   };
 
   const uploadUniData = () => {
     if (data.length > 0) {
-      const batchSize = 100
-      const batches = chunkArray(data, batchSize);
-      console.log(batches)
-      for (const batch of batches) {
-
-        axiosPublic.post('/uniData', batch);
+      const processedJsonData = processSPData(data);
+      const batchSize = 100;
+      const length = processedJsonData.length;
+      console.log(length)
+      for (let i = 0; i < length; i += Math.min(batchSize, length - i)) {
+        axiosPublic.post('/uniData' ,processedJsonData.slice(i, i + Math.min(batchSize, length - i)))
+        .then(data =>console.log(data))
+        .catch(err =>console.log(err))
       }
     }
   };
 
   return (
     <div>
-      
+
 
       <div
         onDragEnter={handleDragEnter}
@@ -105,11 +112,11 @@ const UploadData = () => {
         />
       </form>
 
-      {data.length>0 &&
-      <div className="border-2 border-black mt-10 rounded-lg p-5">
-      {fileName && <p>File selected: {fileName}</p>}
-      <button onClick={uploadUniData} className="px-4 py-2 rounded-lg mt-2 bg-[#7367f0]  text-white font-bold border-black hover:shadow-white hover:bg-[#000000] hover:text-white   ">Upload</button>
-      </div>
+      {data.length > 0 &&
+        <div className="border-2 border-black mt-10 rounded-lg p-5">
+          {fileName && <p>File selected: {fileName}</p>}
+          <button onClick={uploadUniData} className="px-4 py-2 rounded-lg mt-2 bg-[#7367f0]  text-white font-bold border-black hover:shadow-white hover:bg-[#000000] hover:text-white   ">Upload</button>
+        </div>
       }
 
     </div>

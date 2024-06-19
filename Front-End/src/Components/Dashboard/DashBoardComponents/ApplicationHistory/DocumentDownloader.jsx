@@ -1,8 +1,8 @@
-import  { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { saveAs } from 'file-saver';
-
-const PdfViewer = ({ base64String, type }) => {
-  const [dataUrl, setDataUrl] = useState('');
+const DocumentDownloader = ({base64String}) => {
+    const [pdfUrl, setPdfUrl] = useState('');
+  console.log(pdfUrl)
 
   const convertBase64ToBlob = (base64, contentType) => {
     const byteCharacters = atob(base64);
@@ -24,28 +24,35 @@ const PdfViewer = ({ base64String, type }) => {
     return blob;
   };
 
-  useEffect(()=>{
-    const contentType = type;
+  const handlePreview = () => {
+    const contentType = 'application/pdf';
     const pdfBlob = convertBase64ToBlob(base64String, contentType);
     const url = URL.createObjectURL(pdfBlob);
-    setDataUrl(url);
-  },[base64String, type])
-  
+    setPdfUrl(url);
+  };
+
+  const handleDownload = () => {
+    const contentType = 'application/pdf';
+    const pdfBlob = convertBase64ToBlob(base64String, contentType);
+    saveAs(pdfBlob, 'downloaded.pdf');
+  };
 
   return (
     <div className='flex flex-col '>
-      
-      {dataUrl && (
+      <button onClick={handlePreview}>Preview PDF</button>
+      <button onClick={handleDownload}>Download PDF</button>
+      {pdfUrl && (
         <iframe
-          src={dataUrl}
-          title="Data Preview"
-          width="100%"
+          src={pdfUrl}
+          title="PDF Preview"
+          width="600"
           height="400"
           style={{ border: 'none', marginTop: '20px' }}
         />
       )}
     </div>
   );
+  
 };
 
-export default PdfViewer;
+export default DocumentDownloader;

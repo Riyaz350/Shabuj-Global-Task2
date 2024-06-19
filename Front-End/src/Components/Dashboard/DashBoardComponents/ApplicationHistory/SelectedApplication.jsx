@@ -3,6 +3,7 @@ import SelectedApplicationTable from "./SelectedApplicationTable";
 import useAxiosPublic from "../../../../Hooks/useAxiosPublic";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { extractDateTime } from '../../../../Tools/timeExtractor'
+import DocumentUpdater from "./DocumentUpdater";
 const SelectedApplication = ({ application }) => {
     const studentsInfo = application?.studentDetails
     const time = extractDateTime()
@@ -84,7 +85,13 @@ const SelectedApplication = ({ application }) => {
                         {
                             req == 2 &&
                             <div>
-
+                                {application?.documents.map((applicationData, index)=>
+                                <div key={index}>
+                                    {applicationData?.type?.startsWith('/application') &&
+                                    <DocumentUpdater base64String={applicationData?.string}/>
+                                    }
+                                </div>
+                                )}
                             </div>
                         }
                         {

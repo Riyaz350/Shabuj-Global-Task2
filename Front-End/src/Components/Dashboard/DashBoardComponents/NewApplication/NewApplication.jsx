@@ -8,7 +8,7 @@ import StudentsDetails from "./SecondForm/StudentsDetails";
 
 const NewApplication = () => {
     const axiosPublic = useAxiosPublic()
-    const [serial, setSerial] = useState(0)
+    const [serial, setSerial] = useState(2)
     const [uniData, setUniData] = useState([])
     const [documents, setDocuments] = useState([])
     const [firstFormData, setFirstFormData] = useState({})
