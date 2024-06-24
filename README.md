@@ -29,22 +29,20 @@ Before you begin, make sure you have the following installed on your computer:
 
 1. Open your web browser and go to the GitHub repository page for the project.
 2. Click the green "Code" button.
-3. Copy the URL that appears. It should look something like this: `https://github.com/username/repository-name.git`.
+3. Copy the URL that appears. It should look something like this: `https://github.com/Riyaz350/Shabuj-Global-Task2.git`.
 
 Now, follow these steps to clone the repository to your computer:
 
 1. Open **Git Bash** (Windows) or **Terminal** (Mac/Linux).
 2. Type the following command and press Enter:
     ```bash
-    git clone https://github.com/username/repository-name.git
+    git clone https://github.com/Riyaz350/Shabuj-Global-Task2.git
     ```
-    Replace `https://github.com/username/repository-name.git` with the URL you copied.
 
 3. After the cloning process is complete, navigate into the project directory:
     ```bash
-    cd repository-name
+    cd Shabuj-Global-Task2/Front-End
     ```
-    Replace `repository-name/Front-End` with the actual name of the repository.
 
 ### 2. Install Project Dependencies
 
@@ -64,10 +62,10 @@ After the dependencies are installed, you can start the project. This will run t
 
 1. In your terminal, run the following command:
     ```bash
-    npm start
+    npm run dev
     ```
 
-2. After a few moments, you should see output indicating that the project is running. Usually, it will automatically open a new browser window or tab with the address `http://localhost:3000`. If it doesn't open automatically, you can manually open your web browser and go to `http://localhost:3000`.
+2. After a few moments, you should see output indicating that the project is running. Usually, it will automatically open a new browser window or tab with the address `http://localhost:5173`. If it doesn't open automatically, you can manually open your web browser and go to `http://localhost:5173`.
 
 ### 4. You're All Set!
 
