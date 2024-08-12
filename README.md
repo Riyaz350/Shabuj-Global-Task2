@@ -70,3 +70,9 @@ After the dependencies are installed, you can start the project. This will run t
 ### 4. You're All Set!
 
 You should now see the React project running in your browser. Congratulations!
+
+### 4. Spreadsheet file to upload university data
+
+ [sheet link](https://docs.google.com/spreadsheets/d/1rIIvgtyC2wO5GzT1OAe_HWqAimjTTlad/edit?usp=sharing&ouid=105296999969372973094&rtpof=true&sd=true)
+
+ If you want to uplaod your own sheet file then make sure the file is designed exactly like this one without any empty rows.
